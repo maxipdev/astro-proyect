@@ -1,0 +1,80 @@
+---
+import Footer from "../components/footer.astro"
+import SearchBar from "../components/searchBar.astro"
+import Header from "../components/header.astro"
+import { ClientRouter } from "astro:transitions";
+
+const { title } = Astro.props
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+		<ClientRouter />
+	</head>
+	<body>
+		<Header />
+
+		<SearchBar />
+
+		<main>
+			<slot /> 
+		</main>
+
+		<Footer />
+
+	</body>
+</html>
+
+<style is:global>
+	:root {
+  --primary-color: #2968c8;
+  --menu-background-mobile-color: #3A4460;
+  --background: #e7e7e7;
+}
+
+* {
+  color: black;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  background: var(--background);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+}
+
+main {
+	flex: 1;
+}
+
+
+.boton {
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  height: 40px;
+  line-height: 40px;
+  padding: 0 20px;
+  text-align: center;
+  width: auto;
+  border-color: transparent;
+  cursor: pointer;
+  color: #fff;
+  background-color: var(--primary-color);
+}
+
+</style>

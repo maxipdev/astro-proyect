@@ -1,0 +1,19 @@
+---
+import Layout from "../layouts/Layout.astro";
+import CardContainer from "../components/CardContainer.astro";
+
+export async function getStaticPaths() {
+  const categories = ['indumentaria', 'tecnologia', 'otros', 'higene&hogar', 'electrodomesticos', 'tecnologia'];
+
+  return categories.map((category) => ({
+    params: { category },
+  }));
+}
+
+const { category } = Astro.params;
+
+---
+
+<Layout>
+    <CardContainer url={`/${category}`} />
+</Layout>

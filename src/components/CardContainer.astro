@@ -1,0 +1,69 @@
+---
+import Card from "./card.astro";
+import { fetchData } from "../services/fetchData";
+import { BigImage } from '../components/BigImage.jsx'
+
+const { url = '' } = Astro.props
+console.log(url)
+
+const res = await fetchData({ path: `products${url}`}) as any[]
+
+---
+
+<BigImage client:load />
+
+<div class="card-container">
+    {res.map(product => (
+      <Card
+        name={product.name}
+        img={product.img}
+        price={product.price}
+        status={product.enable}
+      />
+    ))}
+  </div>
+
+
+<style>
+  section {
+  h1 {
+    font-size: 16px;
+    color: grey;
+    margin: 0 15px;
+  }
+}
+
+/*Continua con lo general*/
+.title-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.title-container .title {
+  color: gray;
+}
+
+/*Estilos de las CARDS*/
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  /* background-color: beige; */
+  margin: 10px 0;
+}
+
+
+@media (max-width: 750px) {
+  .card-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    padding: 0;
+  }
+}
+</style>

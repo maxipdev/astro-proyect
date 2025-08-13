@@ -1,0 +1,1 @@
+import{u as n,j as s}from"./store.D7d06mNm.js";import"./index.BKz8HbS8.js";function r({name:o,img:t}){const e=n(i=>i.openImageModal);return s.jsx("div",{style:{position:"absolute",height:"100%",width:"100%",top:0,left:0},onClick:()=>e(t,o)})}export{r as ButtonImage};

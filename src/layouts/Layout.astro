@@ -1,80 +1,89 @@
 ---
-import Footer from "../components/footer.astro"
-import SearchBar from "../components/searchBar.astro"
-import Header from "../components/header.astro"
+import Footer from "../components/footer.astro";
+import SearchBar from "../components/searchBar.astro";
+import Header from "../components/header.astro";
 import { ClientRouter } from "astro:transitions";
 
-const { title } = Astro.props
+const { title } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
-		<ClientRouter />
-	</head>
-	<body>
-		<Header />
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <ClientRouter />
+  </head>
+  <body>
+    <Header />
 
-		<SearchBar />
+    <SearchBar />
 
-		<main>
-			<slot /> 
-		</main>
+    <main>
+      <slot />
+    </main>
 
-		<Footer />
-
-	</body>
+    <Footer />
+  </body>
 </html>
 
 <style is:global>
-	:root {
-  --primary-color: #2968c8;
-  --menu-background-mobile-color: #3A4460;
-  --background: #e7e7e7;
-}
+  :root {
+    --primary-color: #2968c8;
+    --menu-background-mobile-color: #3a4460;
+    --background: #e7e7e7;
+  }
 
-* {
-  color: black;
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
 
-body {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-  background: var(--background);
+  body {
+    font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+    background: var(--background);
+    color: black;
 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-height: 100vh;
-}
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+  }
 
-main {
-	flex: 1;
-}
+  main {
+    flex: 1;
+    width: 100%;
+    min-height: calc(100vh - 60px);
+  }
 
+  .boton {
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    height: 40px;
+    line-height: 40px;
+    padding: 0 20px;
+    text-align: center;
+    width: auto;
+    border-color: transparent;
+    cursor: pointer;
+    color: #fff;
+    background-color: var(--primary-color);
+  }
 
-.boton {
-  border-radius: 6px;
-  font-size: 16px;
-  font-weight: 600;
-  height: 40px;
-  line-height: 40px;
-  padding: 0 20px;
-  text-align: center;
-  width: auto;
-  border-color: transparent;
-  cursor: pointer;
-  color: #fff;
-  background-color: var(--primary-color);
-}
-
+  a {
+    text-decoration: none;
+  }
 </style>

@@ -1,222 +1,222 @@
 ---
-import { ButtonImage } from "./buttonBigImage.jsx"
+import { modifyPrice } from "../services/priceModificator";
+import { ButtonImage } from "./buttonBigImage.jsx";
 
-const { name, price, img, status} = Astro.props
+const { id, name, price, img, status } = Astro.props;
 ---
 
-<div class={`card ${status == false && "disable"}`}>
-    {status == false ? <div class="overlay">
-        <span class='sold-out-text'>AGOTADO</span>
-    </div> : null}
+<div class={`card ${status == false ? "disable" : ""}`}>
+  {
+    status == false ? (
+      <div class="overlay">
+        <span class="sold-out-text">AGOTADO</span>
+      </div>
+    ) : null
+  }
 
-    <div class="img-container">
-      <img
-        src={`https://bswmbazkzzilbxoodxmr.supabase.co/storage/v1/object/public/products/public/${img}`}
-        alt={name}
-        loading="lazy"
-      />
+  <div class="img-container">
+    <img
+      src={`https://bswmbazkzzilbxoodxmr.supabase.co/storage/v1/object/public/products/public/${img}`}
+      alt={name}
+      loading="lazy"
+    />
 
-      <ButtonImage client:load name={name} img={img}/>
+    <ButtonImage client:load name={name} img={img} />
+  </div>
+
+  <div class="content">
+    <div class="card-title">
+      {name}
     </div>
+    <h3>$ {modifyPrice(price)}</h3>
 
-    
-    <div class='line'></div>
-    <div class="content">
-        <div class="card-title">
-            {name}
-        </div>
-        <h3>$ {price}</h3>
+    <a class="ver-info" href=`/productos/${id}`>Ver más info</a>
 
-        <a class={status == false ? 'link-disable': ""}
-            href={`https://wa.me/5491154873779?text=Hola,%20%20me%20gustaria%20comprar%20el%20siguiente%20producto:%20${name}`}
-            target="_blank"
-            rel="noopener noreferrer">
-            <button class={`boton ${status == false ? "boton-disable" : ""}`}>Comprar</button>
-        </a>
-    </div>
+    <a
+      class={status == false ? "link-disable" : ""}
+      href={`https://wa.me/5491154873779?text=Hola,%20%20me%20gustaria%20comprar%20el%20siguiente%20producto:%20${name}`}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <button class={`boton ${status == false ? "boton-disable" : ""}`}
+        >Comprar</button
+      >
+    </a>
+  </div>
 </div>
 
-
-
 <style>
-    .card {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  /* background-color: #fafafa ; */
-  background-color: #fff;
-  margin:  0 8px 16px;
-  border-radius: 6px;
-  height: 400px;
+  .card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* background-color: #fafafa ; */
+    background-color: #fff;
+    border-radius: 6px;
+    height: 440px;
+    padding: 8px;
+    width: 284px;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.12);
+  }
 
+  .card .content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
 
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .12);
-}
+  .card .content .card-title {
+    font-size: 18px;
+    font-weight: 400;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    text-transform: lowercase;
+    margin: 5px 0;
+    color: black;
+  }
 
-.card .content {
-  flex: 4;
-  max-width: 284px;
-  min-width: 150px;
-  padding: 0 16px 16px;
+  .card-title::first-letter {
+    text-transform: capitalize;
+  }
 
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-}
+  .card .content h3 {
+    font-weight: 500;
+    font-size: 20px;
+  }
 
+  .card .content .ver-info {
+    text-decoration: none;
+    cursor: pointer;
+    padding: 5px 0 14px 0;
+    color: var(--primary-color);
+  }
 
-.card .content .card-title {
-  font-size: clamp(1.35rem, 2.5vw, 1.5rem);
-  line-height: 1.2;
-  font-weight: 600;
-  max-height: calc(1.2em * 2);
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  text-overflow: ellipsis;
-  text-transform: lowercase;
-  margin: 5px 0;
-  color: black;
-}
-
-.card-title::first-letter {
-  text-transform: capitalize;
-}
-
-.card .content h3 {
-  font-weight: 600;
-}
-
-/*Esta el btn antes aca*/
-.card .content .boton a {
+  /*Esta el btn antes aca*/
+  .card .content .boton a {
     text-decoration: none;
     color: #fff;
     line-height: 40px;
   }
 
-.card .img-container {
-  flex: 6;
-  max-width: 284px;
-  min-width: 150px;
-  padding: 0 16px 16px;
-  padding-top: 16px;
-  overflow: hidden;
-  border-bottom: 1px solid rgba(0,0,0,.1);
-
-  min-height: 261px;
-  position: relative;
-
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-}
-
-
-/*Card Disable*/
-.disable {
-  position: relative;
-  filter: brightness(0.75);
-  pointer-events: none;
-}
-
-.disable .overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.5);
-  z-index: 2;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  pointer-events: none;
-}
-
-.disable .overlay .sold-out-text {
-  color: red;
-  font-size: 2.8rem;
-  font-weight: bold;
-  transform: rotate(-40deg);
-  opacity: 0.6;
-  border: 5px solid red;
-  padding: 10px;
-  text-shadow: 1px 1px 2px black;
-}
-
-.disable .boton-disable, .link-disable {
-  pointer-events: none;
-}
-
-
-
-/*Para evitar errors en cambios especificos, ya que esta hecho con grid lo movile*/
-@media (min-width: 750px) {
-  .card {
-    min-width: 284px;
-  }
-}
-
-@media (max-width: 750px) {
-  .card {
-    background: white;
-    border-radius: 8px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-    height: 415px; /*Mirar esto*/
-    margin: 6px;
-  }
-
   .card .img-container {
     width: 100%;
-    aspect-ratio: 1 / 1; /* Cuadrada, para que no se deforme */
+    min-height: 260px;
+    max-height: 260px;
     overflow: hidden;
-    padding: 8px;
-  }
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    position: relative;
 
-  .card .img-container img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-
-  .content {
-    padding: 10px;
-    max-height: 200px;
-    /* overflow: hidden; */
-  }
-
-  .boton {
-    padding: 6px 12px;
-    background-color: var(--primary-color);
-    border: none;
-    border-radius: 8px;
-    color: white;
-    cursor: pointer;
-    line-height: 6px;
-  }
-
-  .boton a {
-    color: white;
-    text-decoration: none;
+    img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      display: block;
+    }
   }
 
   /*Card Disable*/
-
-  .disable .overlay .sold-out-text {
-    font-size: 2.3rem;
-    border: 5px solid red;
-    padding: 8px;
+  .disable {
+    position: relative;
+    filter: brightness(0.75);
+    pointer-events: none;
   }
 
+  .disable .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.5);
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+  }
 
-}
+  .disable .overlay .sold-out-text {
+    color: red;
+    font-size: 2.8rem;
+    font-weight: bold;
+    transform: rotate(-40deg);
+    opacity: 0.6;
+    border: 5px solid red;
+    padding: 10px;
+    text-shadow: 1px 1px 2px black;
+  }
+
+  .disable .boton-disable,
+  .link-disable {
+    pointer-events: none;
+  }
+
+  /*Para evitar errors en cambios especificos, ya que esta hecho con grid lo movile*/
+  @media (min-width: 750px) {
+    .card {
+      min-width: 284px;
+    }
+  }
+
+  @media (max-width: 750px) {
+    .card {
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+      height: 415px; /*Mirar esto*/
+      margin: 6px;
+    }
+
+    .card .img-container {
+      width: 100%;
+      aspect-ratio: 1 / 1; /* Cuadrada, para que no se deforme */
+      overflow: hidden;
+      padding: 8px;
+    }
+
+    .card .img-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .content {
+      padding: 10px;
+      max-height: 200px;
+      /* overflow: hidden; */
+    }
+
+    .boton {
+      padding: 6px 12px;
+      background-color: var(--primary-color);
+      border: none;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+      line-height: 6px;
+    }
+
+    .boton a {
+      color: white;
+      text-decoration: none;
+    }
+
+    /*Card Disable*/
+
+    .disable .overlay .sold-out-text {
+      font-size: 2.3rem;
+      border: 5px solid red;
+      padding: 8px;
+    }
+  }
 </style>

@@ -1,0 +1,201 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { modifyPrice } from "../../services/priceModificator";
+
+const { product: id } = Astro.params;
+
+import { createClient } from "@supabase/supabase-js";
+const supabaseUrl = "https://bswmbazkzzilbxoodxmr.supabase.co";
+const supabaseKey =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJzd21iYXprenppbGJ4b29keG1yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYzNDQwMjcsImV4cCI6MjA2MTkyMDAyN30.lMyjkrqq5x3Dp3PIohMChddA0pUNZMPBrlI3xDjbP-c";
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+let { data: product, error } = await supabase
+  .from("products")
+  .select("*")
+  .eq("id", id);
+
+const { name, price, img, enable } = product?.[0];
+---
+
+<Layout>
+  <article class="container-page">
+    <a href="/" class="turn-back-container">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-left"
+        ><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path
+          d="M5 12l14 0"></path><path d="M5 12l6 6"></path><path d="M5 12l6 -6"
+        ></path></svg
+      >
+      <span>Atras</span>
+    </a>
+
+    <div class="container-product">
+      <section class="img-container">
+        <img
+          src={`https://bswmbazkzzilbxoodxmr.supabase.co/storage/v1/object/public/products/public/${img}`}
+        />
+      </section>
+
+      <div class="line"></div>
+
+      <section class="container-description">
+        <h1>{name}</h1>
+        <h3>${modifyPrice(price)}</h3>
+        <p>{enable ? "Stock disponible" : "Sin Stock"}</p>
+        <div class="container-buttons">
+          <a
+            class={enable == false ? "link-disable" : ""}
+            href={`https://wa.me/5491154873779?text=Hola,%20%20me%20gustaria%20comprar%20el%20siguiente%20producto:%20${name}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <button class={`boton ${enable == false ? "boton-disable" : ""}`}
+              >Comprar</button
+            >
+          </a>
+          <div class="container-svg">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="30"
+              height="30"
+              viewBox="0 0 24 24"
+              fill="#2968c8"
+              class="icon icon-tabler icons-tabler-filled icon-tabler-heart"
+              ><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path
+                d="M6.979 3.074a6 6 0 0 1 4.988 1.425l.037 .033l.034 -.03a6 6 0 0 1 4.733 -1.44l.246 .036a6 6 0 0 1 3.364 10.008l-.18 .185l-.048 .041l-7.45 7.379a1 1 0 0 1 -1.313 .082l-.094 -.082l-7.493 -7.422a6 6 0 0 1 3.176 -10.215z"
+              ></path></svg
+            >
+          </div>
+        </div>
+      </section>
+    </div>
+  </article>
+</Layout>
+
+<style>
+  .container-page {
+    width: 100dvw;
+    display: flex;
+    justify-content: center;
+    position: relative;
+  }
+
+  .turn-back-container {
+    display: flex;
+    align-items: center;
+    gap: 2.5px;
+    cursor: pointer;
+    position: absolute;
+    width: 80%;
+    max-width: 800px;
+    padding: 5px;
+    color: #666;
+    font-weight: 500;
+    font-size: 20px;
+    z-index: 5;
+    font-family:
+      EB Garamond,
+      Georgia,
+      Times New Roman,
+      serif;
+  }
+
+  .turn-back-container:hover {
+    color: var(--primary-color);
+  }
+
+  .container-product {
+    width: 80%;
+    max-width: 800px;
+    display: flex;
+    border-radius: 20px;
+    padding: 35px 25px 25px 25px;
+    gap: 15px;
+    background-color: white;
+  }
+
+  .container-product .line {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .container-description {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+    word-break: break-word;
+
+    h1 {
+      font-size: 32px;
+      margin-bottom: 20px;
+      font-weight: 600;
+      font-family: Roboto, Arial, sans-serif;
+      color: rgba(0, 0, 0, 0.9);
+    }
+
+    h3 {
+      color: rgba(0, 0, 0, 0.9);
+      font-size: 36px;
+      margin-bottom: 15px;
+      font-weight: 300;
+      font-family: Roboto, Arial, sans-serif;
+    }
+
+    p {
+      color: #666;
+      font-size: 20px;
+      font-weight: 500;
+      padding: 15px 0;
+      font-family:
+        EB Garamond,
+        Georgia,
+        Times New Roman,
+        serif;
+    }
+
+    button {
+      height: 45px;
+      line-height: 45px;
+      font-size: 18px;
+      padding: 0 30px;
+    }
+  }
+
+  .container-product .container-buttons {
+    display: flex;
+    gap: 10px;
+  }
+
+  .container-product .container-buttons .container-svg {
+    display: flex;
+    align-items: center;
+    border-radius: 50%;
+    padding: 0 5px;
+    border: solid 2px var(--primary-color);
+    cursor: pointer;
+  }
+
+  .container-product .img-container {
+    max-width: 390px;
+    max-height: 390px;
+    min-width: 390px;
+    min-height: 390px;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: contain;
+    }
+  }
+</style>

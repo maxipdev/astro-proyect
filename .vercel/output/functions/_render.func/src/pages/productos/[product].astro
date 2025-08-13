@@ -1,0 +1,40 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { fetchData } from "../../services/fetchData";
+
+const { id } = Astro.params;
+
+import { createClient } from "@supabase/supabase-js";
+const supabaseUrl = "https://bswmbazkzzilbxoodxmr.supabase.co";
+const supabaseKey =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJzd21iYXprenppbGJ4b29keG1yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYzNDQwMjcsImV4cCI6MjA2MTkyMDAyN30.lMyjkrqq5x3Dp3PIohMChddA0pUNZMPBrlI3xDjbP-c";
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+let { data: products, error } = await supabase
+  .from("products")
+  .select("*")
+  .eq("id", id);
+
+console.log(products);
+---
+
+<Layout>
+  <div class="container-page">
+    <!-- <div class="container-product"></div> -->
+    <div>{products}</div>
+    <h1>Computadora Gaming</h1>
+  </div>
+</Layout>
+
+<style>
+  /* .container-page {
+    background-color: bisque;
+    width: 80%;
+    max-width: 1080px;
+  } */
+
+  .container-page {
+    background-color: white;
+    border-radius: 100px;
+  }
+</style>

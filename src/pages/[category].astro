@@ -3,7 +3,14 @@ import Layout from "../layouts/Layout.astro";
 import CardContainer from "../components/CardContainer.astro";
 
 export async function getStaticPaths() {
-  const categories = ['indumentaria', 'tecnologia', 'otros', 'higene&hogar', 'electrodomesticos', 'tecnologia'];
+  const categories = [
+    "indumentaria",
+    "tecnologia",
+    "otros",
+    "higene&hogar",
+    "electrodomesticos",
+    "tecnologia",
+  ];
 
   return categories.map((category) => ({
     params: { category },
@@ -12,8 +19,10 @@ export async function getStaticPaths() {
 
 const { category } = Astro.params;
 
+export const prerender = true;
 ---
 
 <Layout>
-    <CardContainer url={`/${category}`} />
+  <h1>{category}</h1>
+  <CardContainer url={`/${category}`} server:defer />
 </Layout>

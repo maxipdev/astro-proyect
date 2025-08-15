@@ -22,7 +22,7 @@ const { category } = Astro.params;
 export const prerender = true;
 ---
 
-<Layout>
+<Layout title=`Jimbofertas - ${category}`>
   <h1>{category}</h1>
   <CardContainer url={`/${category}`} server:defer />
 </Layout>

@@ -1,18 +1,26 @@
 ---
 import Card from "./card.astro";
-import { fetchData } from "../services/fetchData";
 import { BigImage } from "../components/BigImage.jsx";
+import { supabase } from "../services/client.js"
 
 const { url = "" } = Astro.props;
 
-const res = (await fetchData({ path: `products${url}` })) as any[];
+// const res = (await fetchData({ path: `products${url}` })) as any[];
+
+
+let { data, error } = await supabase
+  .from('products')
+  .select('*')
+  .range(0, 9) // first ten products
+
+const products = data ?? [] // in case it's null
 ---
 
 <BigImage client:load />
 
 <div class="card-container">
   {
-    res.map((product) => (
+    products.map((product) => (
       <Card
         id={product.id}
         name={product.name}

@@ -6,7 +6,7 @@
       id="search"
       placeholder="¿Qué estas buscando?"
     />
-    <button class="boton" id="btn">Buscar</button>
+    <button type="button" class="boton" id="btn">Buscar</button>
   </form>
 </section>
 
@@ -44,14 +44,30 @@
   }
 </style>
 
-<script>
-  const btn = document.getElementById("btn");
-  const cardContainer = document.querySelector(".card-container");
 
-  btn?.addEventListener("click", (e) => {
-    e.preventDefault();
-    const input = document.getElementById("search") as HTMLInputElement;
-    const valor = input.value;
-    console.log(valor);
-  });
+<script>
+
+  const infoSearchBar = ()=> {
+    const btn = document.getElementById('btn') 
+    btn?.addEventListener("click", (e) => {
+      e.preventDefault()
+      const name = document.getElementById('search').value
+      // update de URL
+      const params = new URLSearchParams(window.location.search)
+      params.set('name', name)
+
+      history.pushState(null, '', '?' + params.toString())
+      
+      const pathname = window.location.pathname
+      const category = pathname.split('/').pop() // nos quedamos con el ultimo elemeneto despues de la barra 
+
+      fetch(`/api/products?category=${encodeURIComponent(category)}&name=${encodeURIComponent(name)}`)
+      .then(data => data.json())
+      .then(data => console.log(data))
+      .catch(err => console.error(err))
+    })
+  }
+
+  document.addEventListener('DOMContentLoaded', infoSearchBar)
+  document.addEventListener('astro:after-swap', infoSearchBar)
 </script>
